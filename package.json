@@ -1,0 +1,51 @@
+{
+  "name": "serverless-plugin-vpc-eni-cleanup",
+  "version": "1.0.0",
+  "description": "Cleanup lambda VPS EC2 Network Interfaces on stack removal, to speed up the operation",
+  "author": "Mariusz Nowak <medyk@medikoo.com> (http://www.medikoo.com/)",
+  "keywords": [
+    "serverless",
+    "plugin",
+    "lamdba",
+    "vpc",
+    "eni",
+    "network"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/medikoo/serverless-plugin-vpc-eni-cleanup.git"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.140",
+    "bluebird": "^3.5.1",
+    "d": "1"
+  },
+  "devDependencies": {
+    "es5-ext": "^0.10.35",
+    "eslint": "^4.9",
+    "eslint-config-medikoo": "^1.28",
+    "event-emitter": "^0.3.5",
+    "istanbul": "^0.4.5",
+    "proxyquire": "^1.8",
+    "sinon": "^4.0.2",
+    "tape": "^4.8",
+    "tape-index": "^1.1"
+  },
+  "peerDependencies": {
+    "serverless": "1"
+  },
+  "eslintConfig": {
+    "extends": "medikoo",
+    "root": true,
+    "env": {
+      "node": true
+    }
+  },
+  "scripts": {
+    "coverage": "istanbul cover test/index.js",
+    "check-coverage": "npm run coverage && istanbul check-coverage --statements 100 --function 100 --branches 100 --lines 100",
+    "lint": "eslint --ignore-path=.gitignore .",
+    "test": "node test/index.js"
+  },
+  "license": "MIT"
+}
