@@ -116,10 +116,16 @@ Object.defineProperties(
 				return new Ec2({ region: this.serverless.service.provider.region });
 			}),
 			functionNames: d(function () {
-				const warmupFunction = this.serverless.service.custom.warmup ? [this.serverless.service.custom.warmup.name] : [];
+				let additionalFunctions = [];
+				const custom = this.serverless.service.custom;
+
+				if(custom && custom.eniCleanup && custom.eniCleanup.additionalFunctionsToClean) {
+					additionalFunctions = custom.eniCleanup.additionalFunctionsToClean
+				}
+				
 				return Object.keys(this.serverless.service.functions).map(
 					functionName => this.serverless.service.functions[functionName].name
-				).concat(warmupFunction);
+				).concat(additionalFunctions);
 			})
 		})
 	)
