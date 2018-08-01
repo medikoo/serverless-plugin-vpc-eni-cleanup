@@ -27,7 +27,13 @@ Activate plugin in `serverless.yml`
 ```yaml
 plugins:
  - serverless-plugin-vpc-eni-cleanup
+ 
+custom:
+  eniCleanup:
+    additionalFunctionsToClean: # optional
+      - anyAdditionalFunctionToCleanup # (ie. ${self:custom.warmup.name})
 ```
+
 
 Following IAM policy needs to be ensured for plugin to work without issues
 
