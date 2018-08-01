@@ -42,7 +42,16 @@ class ServerlessPluginVpcEniCleanup {
 												AttachmentId:
 													networkInterface.Attachment.AttachmentId
 											})
-											.promise();
+											.promise()
+											.then(
+												() =>
+													this.serverless.cli.log(
+														"VPC ENI Cleanup: " +
+															`Detached ${ interfaceId } ` +
+															`Attachment ${ networkInterface.Attachment.AttachmentId } ` +
+															`ENI of ${ functionName } ` +
+															"VPC function"
+											));
 									}
 									return detachmentPromise.then(
 										() =>
@@ -107,9 +116,10 @@ Object.defineProperties(
 				return new Ec2({ region: this.serverless.service.provider.region });
 			}),
 			functionNames: d(function () {
+				const warmupFunction = this.serverless.service.custom.warmup ? [this.serverless.service.custom.warmup.name] : [];
 				return Object.keys(this.serverless.service.functions).map(
 					functionName => this.serverless.service.functions[functionName].name
-				);
+				).concat(warmupFunction);
 			})
 		})
 	)
