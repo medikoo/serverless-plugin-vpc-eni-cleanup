@@ -15,6 +15,7 @@ test("Serverless Plugin VPC ENI Cleanup", t => {
 	t.test("Success run", t => {
 		const plugin = new Plugin(serverlessMock);
 		plugin.cleanupInterval = 0;
+		plugin.handleError = error => { throw error; };
 		const { ec2 } = plugin;
 
 		sinon.spy(ec2, "describeNetworkInterfaces");
