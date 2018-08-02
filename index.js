@@ -33,54 +33,8 @@ class ServerlessPluginVpcEniCleanup {
 					.then(
 						result =>
 							Promise.all(
-								result.NetworkInterfaces.map(networkInterface => {
-									const interfaceId = networkInterface.NetworkInterfaceId;
-									let detachmentPromise = noopPromise;
-									if (networkInterface.Attachment) {
-										detachmentPromise = this.ec2
-											.detachNetworkInterface({
-												AttachmentId:
-													networkInterface.Attachment.AttachmentId
-											})
-											.promise();
-									}
-									return detachmentPromise.then(
-										() =>
-											this.ec2
-												.deleteNetworkInterface({
-													NetworkInterfaceId: interfaceId
-												})
-												.promise()
-												.then(
-													() =>
-														this.serverless.cli.log(
-															"VPC ENI Cleanup: " +
-																`Deleted ${ interfaceId } ` +
-																`ENI of ${ functionName } ` +
-																"VPC function"
-														),
-													error => {
-														if (
-															error.code === "InvalidParameterValue"
-														) {
-															// Network interface is currently in use
-															// Skip on this error, as it may happen
-															// few times for given interface
-															return;
-														}
-														if (
-															error.code ===
-															"InvalidNetworkInterfaceID.NotFound"
-														) {
-															// Interface was already deleted
-															return;
-														}
-														this.handleError(error);
-													}
-												),
-										this.handleError.bind(this)
-									);
-								})
+								result.NetworkInterfaces.map(networkInterface =>
+									this._deleteNetworkInterface(networkInterface, functionName))
 							),
 						this.handleError.bind(this)
 					))
@@ -88,6 +42,41 @@ class ServerlessPluginVpcEniCleanup {
 			if (this.isDisabled) return;
 			setTimeout(this.cleanup.bind(this), this.cleanupInterval);
 		});
+	}
+	_deleteNetworkInterface(networkInterface, functionName) {
+		const interfaceId = networkInterface.NetworkInterfaceId;
+		let detachmentPromise = noopPromise;
+		if (networkInterface.Attachment) {
+			detachmentPromise = this.ec2
+				.detachNetworkInterface({ AttachmentId: networkInterface.Attachment.AttachmentId })
+				.promise();
+		}
+		return detachmentPromise.then(
+			() =>
+				this.ec2.deleteNetworkInterface({ NetworkInterfaceId: interfaceId }).promise().then(
+					() =>
+						this.serverless.cli.log(
+							"VPC ENI Cleanup: " +
+								`Deleted ${ interfaceId } ` +
+								`ENI of ${ functionName } ` +
+								"VPC function"
+						),
+					error => {
+						if (error.code === "InvalidParameterValue") {
+							// Network interface is currently in use
+							// Skip on this error, as it may happen
+							// few times for given interface
+							return;
+						}
+						if (error.code === "InvalidNetworkInterfaceID.NotFound") {
+							// Interface was already deleted
+							return;
+						}
+						this.handleError(error);
+					}
+				),
+			this.handleError.bind(this)
+		);
 	}
 	handleError(error) {
 		this.isDisabled = true;
