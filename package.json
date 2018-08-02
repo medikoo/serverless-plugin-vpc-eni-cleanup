@@ -23,7 +23,7 @@
   "devDependencies": {
     "es5-ext": "^0.10.45",
     "eslint": "^5.2",
-    "eslint-config-medikoo": "^1.35",
+    "eslint-config-medikoo": "^1.37",
     "event-emitter": "^0.3.5",
     "istanbul": "^0.4.5",
     "proxyquire": "^2.0.1",
