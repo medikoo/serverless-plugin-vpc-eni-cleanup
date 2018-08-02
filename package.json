@@ -16,20 +16,20 @@
     "url": "git://github.com/medikoo/serverless-plugin-vpc-eni-cleanup.git"
   },
   "dependencies": {
-    "aws-sdk": "^2.140",
+    "aws-sdk": "^2.285.1",
     "bluebird": "^3.5.1",
     "d": "1"
   },
   "devDependencies": {
-    "es5-ext": "^0.10.35",
-    "eslint": "^4.9",
-    "eslint-config-medikoo": "^1.28",
+    "es5-ext": "^0.10.45",
+    "eslint": "^5.2",
+    "eslint-config-medikoo": "^1.35",
     "event-emitter": "^0.3.5",
     "istanbul": "^0.4.5",
-    "proxyquire": "^1.8",
-    "sinon": "^4.0.2",
-    "tape": "^4.8",
-    "tape-index": "^1.1"
+    "proxyquire": "^2.0.1",
+    "sinon": "^6.1.4",
+    "tape": "^4.9.1",
+    "tape-index": "2"
   },
   "peerDependencies": {
     "serverless": "1"
