@@ -9,10 +9,7 @@ const noop       = require("es5-ext/function/noop")
 test("Serverless Plugin VPC ENI Cleanup", t => {
 	const serverlessMock = {
 		cli: { log: noop },
-		service: {
-			functions: { foo: { name: "foo" } },
-			provider: { region: "eu-west-1" }
-		}
+		service: { functions: { foo: { name: "foo" } }, provider: { region: "eu-west-1" } }
 	};
 
 	t.test("Success run", t => {
@@ -30,14 +27,11 @@ test("Serverless Plugin VPC ENI Cleanup", t => {
 			plugin.hooks["after:remove:remove"]();
 			plugin.cleanup(); // Confirm noop call (important for full coverage)
 			t.equal(
-				ec2.describeNetworkInterfaces.callCount,
-				3,
+				ec2.describeNetworkInterfaces.callCount, 3,
 				"Retrieves network interfaces repeatedly"
 			);
 			t.equal(
-				ec2.detachNetworkInterface.callCount,
-				1,
-				"Detaches network interface if attached"
+				ec2.detachNetworkInterface.callCount, 1, "Detaches network interface if attached"
 			);
 			t.equal(ec2.deleteNetworkInterface.callCount, 4, "Deletes existing network interfaces");
 			t.end();
@@ -55,8 +49,7 @@ test("Serverless Plugin VPC ENI Cleanup", t => {
 
 		setTimeout(() => {
 			t.equal(
-				plugin.handleError.callCount,
-				1,
+				plugin.handleError.callCount, 1,
 				"Handles gently eventual not expected AWS SDK errors"
 			);
 			t.end();
