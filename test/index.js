@@ -1,22 +1,29 @@
 "use strict";
 
 const noop       = require("es5-ext/function/noop")
-    , proxyquire = require("proxyquire")
     , sinon      = require("sinon")
     , test       = require("tape")
-    , Plugin     = proxyquire("../", { "aws-sdk/clients/ec2": require("./__ec2-mock") });
+    , Ec2        = require("./__ec2-mock")
+    , Plugin     = require("../");
 
 test("Serverless Plugin VPC ENI Cleanup", t => {
-	const serverlessMock = {
+	const serverlessMock = ec2 => ({
 		cli: { log: noop },
-		service: { functions: { foo: { name: "foo" } }, provider: { region: "eu-west-1" } }
-	};
+		service: { functions: { foo: { name: "foo" } }, provider: { region: "eu-west-1" } },
+		getProvider() {
+			return {
+				request(service, method, params) {
+					return ec2[method](params).promise();
+				}
+			};
+		}
+	});
 
 	t.test("Success run", t => {
-		const plugin = new Plugin(serverlessMock);
+		const ec2 = new Ec2();
+		const plugin = new Plugin(serverlessMock(ec2));
 		plugin.cleanupInterval = 0;
 		plugin.handleError = error => { throw error; };
-		const { ec2 } = plugin;
 
 		sinon.spy(ec2, "describeNetworkInterfaces");
 		sinon.spy(ec2, "detachNetworkInterface");
@@ -40,9 +47,10 @@ test("Serverless Plugin VPC ENI Cleanup", t => {
 	});
 
 	t.test("Error run", t => {
-		const plugin = new Plugin(serverlessMock);
+		const ec2 = new Ec2();
+		const plugin = new Plugin(serverlessMock(ec2));
 		plugin.cleanupInterval = 0;
-		plugin.ec2.errors = [new Error("Unknown error")];
+		ec2.errors = [new Error("Unknown error")];
 
 		sinon.spy(plugin, "handleError");
 
