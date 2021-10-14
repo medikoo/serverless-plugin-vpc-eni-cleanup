@@ -1,8 +1,8 @@
 "use strict";
 
-const d = require("d")
-	, lazy = require("d/lazy")
-	, BbPromise = require("bluebird")
+const d           = require("d")
+	, lazy        = require("d/lazy")
+	, BbPromise   = require("bluebird")
 	, { inspect } = require("util");
 
 const noopPromise = Promise.resolve();
@@ -16,31 +16,19 @@ class ServerlessPluginVpcEniCleanup {
 			"after:remove:remove": () => this.isDisabled = true
 		};
 	}
-
-	describeNetworkInterfaces(args) {
-		return this.provider.request("EC2", "describeNetworkInterfaces", args);
-	}
-
-	detachNetworkInterface(args) {
-		return this.provider.request("EC2", "detachNetworkInterface", args);
-	}
-
-	deleteNetworkInterface(args) {
-		return this.provider.request("EC2", "deleteNetworkInterface", args);
-	}
-
 	cleanup() {
 		if (this.isDisabled) return;
 		// Intentionally we do not return promise,
 		// as we want to have polling done in parallel in the background
 		BbPromise.all(
 			this.functionNames.map(functionName =>
-				this.describeNetworkInterfaces({
-					Filters: [
-						{ Name: "requester-id", Values: [`*:${ functionName }`] },
-						{ Name: "description", Values: ["AWS Lambda VPC ENI*"] }
-					]
-				})
+				this.provider
+					.request("EC2", "describeNetworkInterfaces", {
+						Filters: [
+							{ Name: "requester-id", Values: [`*:${ functionName }`] },
+							{ Name: "description", Values: ["AWS Lambda VPC ENI*"] }
+						]
+					})
 					.then(
 						result =>
 							Promise.all(
@@ -54,41 +42,46 @@ class ServerlessPluginVpcEniCleanup {
 			setTimeout(this.cleanup.bind(this), this.cleanupInterval);
 		});
 	}
-
 	_deleteNetworkInterface(networkInterface, functionName) {
 		const interfaceId = networkInterface.NetworkInterfaceId;
 		let detachmentPromise = noopPromise;
 		if (networkInterface.Attachment) {
-			detachmentPromise = this.detachNetworkInterface({ AttachmentId: networkInterface.Attachment.AttachmentId });
+			detachmentPromise = this.provider
+				.request(
+					"EC2",
+					"detachNetworkInterface",
+					{ AttachmentId: networkInterface.Attachment.AttachmentId }
+				);
 		}
 		return detachmentPromise.then(
 			() =>
-				this.deleteNetworkInterface({ NetworkInterfaceId: interfaceId }).then(
-					() =>
-						this.serverless.cli.log(
-							"VPC ENI Cleanup: " +
-							`Deleted ${ interfaceId } ` +
-							`ENI of ${ functionName } ` +
-							"VPC function"
-						),
-					error => {
-						if (error.code === "InvalidParameterValue") {
-							// Network interface is currently in use
-							// Skip on this error, as it may happen
-							// few times for given interface
-							return;
+				this.provider
+					.request("EC2", "deleteNetworkInterface", { NetworkInterfaceId: interfaceId })
+					.then(
+						() =>
+							this.serverless.cli.log(
+								"VPC ENI Cleanup: " +
+								`Deleted ${ interfaceId } ` +
+								`ENI of ${ functionName } ` +
+								"VPC function"
+							),
+						error => {
+							if (error.code === "InvalidParameterValue") {
+								// Network interface is currently in use
+								// Skip on this error, as it may happen
+								// few times for given interface
+								return;
+							}
+							if (error.code === "InvalidNetworkInterfaceID.NotFound") {
+								// Interface was already deleted
+								return;
+							}
+							this.handleError(error);
 						}
-						if (error.code === "InvalidNetworkInterfaceID.NotFound") {
-							// Interface was already deleted
-							return;
-						}
-						this.handleError(error);
-					}
-				),
+					),
 			this.handleError.bind(this)
 		);
 	}
-
 	handleError(error) {
 		this.isDisabled = true;
 		this.serverless.cli.log(`VPC ENI Cleanup: Error: ${ error.message }\n${ inspect(error) }`);
