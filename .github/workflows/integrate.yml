@@ -204,7 +204,7 @@ jobs:
         run: npm test
 
   linuxNode6:
-    name: "[Linux] Node.js v10: Unit tests"
+    name: "[Linux] Node.js v6: Unit tests"
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
