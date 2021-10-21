@@ -1,21 +1,17 @@
 "use strict";
 
-const noop       = require("es5-ext/function/noop")
-    , sinon      = require("sinon")
-    , test       = require("tape")
-    , Ec2        = require("./__ec2-mock")
-    , Plugin     = require("../");
+const noop   = require("es5-ext/function/noop")
+    , sinon  = require("sinon")
+    , test   = require("tape")
+    , Ec2    = require("./__ec2-mock")
+    , Plugin = require("../");
 
 test("Serverless Plugin VPC ENI Cleanup", t => {
 	const serverlessMock = ec2 => ({
 		cli: { log: noop },
 		service: { functions: { foo: { name: "foo" } }, provider: { region: "eu-west-1" } },
 		getProvider() {
-			return {
-				request(service, method, params) {
-					return ec2[method](params).promise();
-				}
-			};
+			return { request(service, method, params) { return ec2[method](params).promise(); } };
 		}
 	});
 

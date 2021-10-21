@@ -7,10 +7,7 @@ const remove             = require("es5-ext/array/#/remove")
     , ee                 = require("event-emitter")
     , interfacesResponse = require("./interfaces-response");
 
-const promiseWrap = fn =>
-	function (...args) {
-		return { promise: () => fn.apply(this, args) };
-	};
+const promiseWrap = fn => function (...args) { return { promise: () => fn.apply(this, args) }; };
 
 class Ec2 {
 	constructor() {

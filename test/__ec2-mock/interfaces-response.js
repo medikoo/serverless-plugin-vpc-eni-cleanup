@@ -19,14 +19,8 @@ module.exports = {
 			NetworkInterfaceId: "eni-cdbecfe1",
 			OwnerId: "756207178743",
 			PrivateIpAddress: "10.0.28.166",
-			PrivateIpAddresses: [
-				{
-					Primary: true,
-					PrivateIpAddress: "10.0.28.166"
-				}
-			],
-			RequesterId:
-				"AROAICRTBUNPTSPCFAZMO:maas-tsp-devmedikoo3-booking-citybikes",
+			PrivateIpAddresses: [{ Primary: true, PrivateIpAddress: "10.0.28.166" }],
+			RequesterId: "AROAICRTBUNPTSPCFAZMO:maas-tsp-devmedikoo3-booking-citybikes",
 			RequesterManaged: false,
 			SourceDestCheck: true,
 			Status: "available",
@@ -59,14 +53,8 @@ module.exports = {
 			NetworkInterfaceId: "eni-96dfadba",
 			OwnerId: "756207178743",
 			PrivateIpAddress: "10.0.17.99",
-			PrivateIpAddresses: [
-				{
-					Primary: true,
-					PrivateIpAddress: "10.0.17.99"
-				}
-			],
-			RequesterId:
-				"AROAJTF57QRFPXULND6TC:maas-tsp-devmedikoo3-booking-citybikes",
+			PrivateIpAddresses: [{ Primary: true, PrivateIpAddress: "10.0.17.99" }],
+			RequesterId: "AROAJTF57QRFPXULND6TC:maas-tsp-devmedikoo3-booking-citybikes",
 			RequesterManaged: false,
 			SourceDestCheck: true,
 			Status: "in-use",

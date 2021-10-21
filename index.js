@@ -1,9 +1,9 @@
 "use strict";
 
 const d           = require("d")
-	, lazy        = require("d/lazy")
-	, BbPromise   = require("bluebird")
-	, { inspect } = require("util");
+    , lazy        = require("d/lazy")
+    , BbPromise   = require("bluebird")
+    , { inspect } = require("util");
 
 const noopPromise = Promise.resolve();
 
@@ -13,7 +13,7 @@ class ServerlessPluginVpcEniCleanup {
 		this.provider = this.serverless.getProvider(this.serverless.service.provider.name);
 		this.hooks = {
 			"before:remove:remove": this.cleanup.bind(this),
-			"after:remove:remove": () => this.isDisabled = true
+			"after:remove:remove": () => (this.isDisabled = true)
 		};
 	}
 	cleanup() {
@@ -33,10 +33,12 @@ class ServerlessPluginVpcEniCleanup {
 						result =>
 							Promise.all(
 								result.NetworkInterfaces.map(networkInterface =>
-									this._deleteNetworkInterface(networkInterface, functionName))
+									this._deleteNetworkInterface(networkInterface, functionName)
+								)
 							),
 						this.handleError.bind(this)
-					))
+					)
+			)
 		).then(() => {
 			if (this.isDisabled) return;
 			setTimeout(this.cleanup.bind(this), this.cleanupInterval);
@@ -46,12 +48,9 @@ class ServerlessPluginVpcEniCleanup {
 		const interfaceId = networkInterface.NetworkInterfaceId;
 		let detachmentPromise = noopPromise;
 		if (networkInterface.Attachment) {
-			detachmentPromise = this.provider
-				.request(
-					"EC2",
-					"detachNetworkInterface",
-					{ AttachmentId: networkInterface.Attachment.AttachmentId }
-				);
+			detachmentPromise = this.provider.request("EC2", "detachNetworkInterface", {
+				AttachmentId: networkInterface.Attachment.AttachmentId
+			});
 		}
 		return detachmentPromise.then(
 			() =>
@@ -61,9 +60,9 @@ class ServerlessPluginVpcEniCleanup {
 						() =>
 							this.serverless.cli.log(
 								"VPC ENI Cleanup: " +
-								`Deleted ${ interfaceId } ` +
-								`ENI of ${ functionName } ` +
-								"VPC function"
+									`Deleted ${ interfaceId } ` +
+									`ENI of ${ functionName } ` +
+									"VPC function"
 							),
 						error => {
 							if (error.code === "InvalidParameterValue") {

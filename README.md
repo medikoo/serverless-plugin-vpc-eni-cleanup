@@ -27,7 +27,7 @@ Activate plugin in `serverless.yml`
 
 ```yaml
 plugins:
- - serverless-plugin-vpc-eni-cleanup
+  - serverless-plugin-vpc-eni-cleanup
 ```
 
 Following IAM policy needs to be ensured for plugin to work without issues
