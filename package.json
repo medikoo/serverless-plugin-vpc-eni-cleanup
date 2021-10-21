@@ -44,5 +44,8 @@
     "lint": "eslint --ignore-path=.gitignore .",
     "test": "node test/index.js"
   },
+  "engines": {
+    "node": ">=6.0"
+  },
   "license": "MIT"
 }
