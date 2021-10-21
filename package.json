@@ -1,51 +1,51 @@
 {
-  "name": "serverless-plugin-vpc-eni-cleanup",
-  "version": "1.0.1",
-  "description": "Cleanup lambda VPS EC2 Network Interfaces on stack removal, to speed up the operation",
-  "author": "Mariusz Nowak <medyk@medikoo.com> (http://www.medikoo.com/)",
-  "keywords": [
-    "serverless",
-    "plugin",
-    "lamdba",
-    "vpc",
-    "eni",
-    "network"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/medikoo/serverless-plugin-vpc-eni-cleanup.git"
-  },
-  "dependencies": {
-    "aws-sdk": "^2.753.0",
-    "bluebird": "^3.7.2",
-    "d": "^1.0.1"
-  },
-  "devDependencies": {
-    "es5-ext": "^0.10.53",
-    "eslint": "^8.0.1",
-    "eslint-config-medikoo": "^4.1.1",
-    "event-emitter": "^0.3.5",
-    "istanbul": "^0.4.5",
-    "proxyquire": "^2.1.3",
-    "sinon": "^6.3.5",
-    "tape": "^4.13.3",
-    "tape-index": "^2.0.0"
-  },
-  "peerDependencies": {
-    "serverless": "1 || 2"
-  },
-  "eslintConfig": {
-    "extends": "medikoo/node/6",
-    "root": true
-  },
-  "scripts": {
-    "coverage": "istanbul cover test/index.js",
-    "check-coverage": "npm run coverage && istanbul check-coverage --statements 100 --function 100 --branches 100 --lines 100",
-    "lint": "eslint --ignore-path=.gitignore .",
-    "test": "node test/index.js"
-  },
-  "engines": {
-    "node": ">=6.0"
-  },
-  "license": "MIT"
+	"name": "serverless-plugin-vpc-eni-cleanup",
+	"version": "1.0.1",
+	"description": "Cleanup lambda VPS EC2 Network Interfaces on stack removal, to speed up the operation",
+	"author": "Mariusz Nowak <medyk@medikoo.com> (http://www.medikoo.com/)",
+	"keywords": [
+		"serverless",
+		"plugin",
+		"lamdba",
+		"vpc",
+		"eni",
+		"network"
+	],
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/medikoo/serverless-plugin-vpc-eni-cleanup.git"
+	},
+	"dependencies": {
+		"aws-sdk": "^2.753.0",
+		"bluebird": "^3.7.2",
+		"d": "^1.0.1"
+	},
+	"devDependencies": {
+		"es5-ext": "^0.10.53",
+		"eslint": "^8.0.1",
+		"eslint-config-medikoo": "^4.1.1",
+		"event-emitter": "^0.3.5",
+		"istanbul": "^0.4.5",
+		"proxyquire": "^2.1.3",
+		"sinon": "^6.3.5",
+		"tape": "^4.13.3",
+		"tape-index": "^2.0.0"
+	},
+	"peerDependencies": {
+		"serverless": "1 || 2"
+	},
+	"eslintConfig": {
+		"extends": "medikoo/node/6",
+		"root": true
+	},
+	"scripts": {
+		"coverage": "istanbul cover test/index.js",
+		"check-coverage": "npm run coverage && istanbul check-coverage --statements 100 --function 100 --branches 100 --lines 100",
+		"lint": "eslint --ignore-path=.gitignore .",
+		"test": "node test/index.js"
+	},
+	"engines": {
+		"node": ">=6.0"
+	},
+	"license": "MIT"
 }
