@@ -49,7 +49,7 @@
 		]
 	},
 	"peerDependencies": {
-		"serverless": "1 || 2"
+		"serverless": "1 || 2 || 3"
 	},
 	"eslintConfig": {
 		"extends": "medikoo/node/6",
