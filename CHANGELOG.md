@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.3](https://github.com/medikoo/serverless-plugin-vpc-eni-cleanup/compare/v1.0.2...v1.0.3) (2021-11-30)
+
+### Maintenance Improvements
+
+- Declare as Serverless Framework v3 compatible ([194c5ad](https://github.com/medikoo/serverless-plugin-vpc-eni-cleanup/commit/194c5adec1bc89b534ee5350be4ffb9d9271430b))
+
 ### [1.0.2](https://github.com/medikoo/serverless-plugin-vpc-eni-cleanup/compare/v1.0.1...v1.0.2) (2021-10-21)
 
 ### Bug Fixes
