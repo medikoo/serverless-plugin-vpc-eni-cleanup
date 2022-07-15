@@ -17,7 +17,6 @@
 	},
 	"dependencies": {
 		"aws-sdk": "^2.1039.0",
-		"bluebird": "^3.7.2",
 		"d": "^1.0.1"
 	},
 	"devDependencies": {
