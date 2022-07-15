@@ -12,7 +12,9 @@ class ServerlessPluginVpcEniCleanup {
 		this.provider = this.serverless.getProvider(this.serverless.service.provider.name);
 		this.hooks = {
 			"before:remove:remove": this.cleanup.bind(this),
-			"after:remove:remove": () => (this.isDisabled = true)
+			"after:remove:remove": () => (this.isDisabled = true),
+			// for example, if the stack does not exist
+			"error:remove:remove": () => (this.isDisabled = true)
 		};
 	}
 	cleanup() {
