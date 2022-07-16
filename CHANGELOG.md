@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.4](https://github.com/medikoo/serverless-plugin-vpc-eni-cleanup/compare/v1.0.3...v1.0.4) (2022-07-16)
+
+### Bug Fixes
+
+- Ensure to stop monitoring on error ([#11](https://github.com/medikoo/serverless-plugin-vpc-eni-cleanup/issues/11)) ([78c2fd4](https://github.com/medikoo/serverless-plugin-vpc-eni-cleanup/commit/78c2fd4a30d83a4fb4deb90cbac0a1d929951840)) ([Julian Grinblat](https://github.com/perrin4869))
+
+### Maintenance Improvements
+
+- Replace `bluebird` with native promises ([#12](https://github.com/medikoo/serverless-plugin-vpc-eni-cleanup/issues/12)) ([3cd1205](https://github.com/medikoo/serverless-plugin-vpc-eni-cleanup/commit/3cd120504b89f745f01dc31ad93d443c4bc47278)) ([Julian Grinblat](https://github.com/perrin4869))
+
 ### [1.0.3](https://github.com/medikoo/serverless-plugin-vpc-eni-cleanup/compare/v1.0.2...v1.0.3) (2021-11-30)
 
 ### Maintenance Improvements

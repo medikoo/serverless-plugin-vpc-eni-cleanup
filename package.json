@@ -1,6 +1,6 @@
 {
 	"name": "serverless-plugin-vpc-eni-cleanup",
-	"version": "1.0.3",
+	"version": "1.0.4",
 	"description": "Cleanup lambda VPS EC2 Network Interfaces on stack removal, to speed up the operation",
 	"author": "Mariusz Nowak <medyk@medikoo.com> (http://www.medikoo.com/)",
 	"keywords": [
