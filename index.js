@@ -2,7 +2,6 @@
 
 const d           = require("d")
     , lazy        = require("d/lazy")
-    , BbPromise   = require("bluebird")
     , { inspect } = require("util");
 
 const noopPromise = Promise.resolve();
@@ -20,7 +19,7 @@ class ServerlessPluginVpcEniCleanup {
 		if (this.isDisabled) return;
 		// Intentionally we do not return promise,
 		// as we want to have polling done in parallel in the background
-		BbPromise.all(
+		Promise.all(
 			this.functionNames.map(functionName =>
 				this.provider
 					.request("EC2", "describeNetworkInterfaces", {
