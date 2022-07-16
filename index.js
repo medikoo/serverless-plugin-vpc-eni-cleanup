@@ -14,7 +14,7 @@ class ServerlessPluginVpcEniCleanup {
 			"before:remove:remove": this.cleanup.bind(this),
 			"after:remove:remove": () => (this.isDisabled = true),
 			// for example, if the stack does not exist
-			"error:remove:remove": () => (this.isDisabled = true)
+			"error": () => (this.isDisabled = true)
 		};
 	}
 	cleanup() {
